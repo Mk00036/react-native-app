@@ -13,12 +13,6 @@ import ErrorMessage from "../components/ErrorMessage";
 
 const HomeScreen = () => {
   const { data, loading, error } = useFetchCompetitions();
-
-  useEffect(() => {
-    console.clear();
-    console.log("Fetched data:", data);
-  }, [data]);
-
   if (loading) return <Loader />;
   if (error) return <ErrorMessage message={error} />;
 

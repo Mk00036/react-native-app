@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   TextInput,
@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useFocusEffect } from "@react-navigation/native";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid Email").required("Required"),
@@ -17,6 +18,14 @@ const loginSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({ navigation }) => {
+ const [formKey, setFormKey] = useState(0);
+
+ useFocusEffect(
+    React.useCallback(() => {
+      setFormKey(prev => prev + 1);
+    }, [])
+  );
+
   const handleLogin = (values) => {
     if (values.email === "test@example.com" && values.password === "1234") {
       navigation.navigate("Home");
@@ -32,6 +41,7 @@ const LoginScreen = ({ navigation }) => {
       <Text style={styles.subtitle}>Login to continue</Text>
 
       <Formik
+        key={formKey}
         initialValues={{ email: "", password: "" }}
         validationSchema={loginSchema}
         onSubmit={handleLogin}
